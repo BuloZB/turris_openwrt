@@ -1,0 +1,9 @@
+--- a/drivers/video/Kconfig	2015-09-25 09:41:34.290065400 +0200
++++ b/drivers/video/Kconfig	2015-10-12 14:52:28.143240499 +0200
+@@ -2511,4 +2511,6 @@ config FB_SSD1307
+ 	  This driver implements support for the Solomon SSD1307
+ 	  OLED controller over I2C.
+ 
++source "drivers/video/fbtft/Kconfig"
++
+ endmenu

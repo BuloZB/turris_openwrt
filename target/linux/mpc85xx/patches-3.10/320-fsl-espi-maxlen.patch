@@ -1,0 +1,34 @@
+--- a/drivers/video/fbtft/fbtft-io.c
++++ b/drivers/video/fbtft/fbtft-io.c
+@@ -7,7 +7,7 @@
+ #endif
+ #include "fbtft.h"
+ 
+-int fbtft_write_spi(struct fbtft_par *par, void *buf, size_t len)
++int _fbtft_write_spi(struct fbtft_par *par, void *buf, size_t len)
+ {
+ 	struct spi_transfer t = {
+ 		.tx_buf = buf,
+@@ -32,6 +32,22 @@ int fbtft_write_spi(struct fbtft_par *par, void *buf, size_t len)
+ 	spi_message_add_tail(&t, &m);
+ 	return spi_sync(par->spi, &m);
+ }
++
++int fbtft_write_spi(struct fbtft_par *par, void *buf, size_t len)
++{
++	const size_t fsl_espi_maxlen = 32768; //limit max transfer length
++	int retval;
++
++	while(len > fsl_espi_maxlen) {
++		retval = _fbtft_write_spi(par, buf, fsl_espi_maxlen);
++		if(retval != 0)
++			return retval;
++		len -= fsl_espi_maxlen;
++		buf += fsl_espi_maxlen;
++	}
++	retval = _fbtft_write_spi(par, buf, len);
++	return retval;
++}
+ EXPORT_SYMBOL(fbtft_write_spi);
+ 
+ /**
