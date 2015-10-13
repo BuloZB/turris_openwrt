@@ -83,6 +83,139 @@ endef
 
 $(eval $(call KernelPackage,fb-cfb-imgblt))
 
+define KernelPackage/fb-sys-fillrect
+  SUBMENU:=$(VIDEO_MENU)
+  TITLE:=Framebuffer software rectangle filling support
+  DEPENDS:=+kmod-fb
+  KCONFIG:=CONFIG_FB_SYS_FILLRECT
+  FILES:=$(LINUX_DIR)/drivers/video/sysfillrect.ko
+  AUTOLOAD:=$(call AutoLoad,07,sysfillrect)
+endef
+
+define KernelPackage/fb-sys-fillrect/description
+ Kernel support for software rectangle filling
+endef
+
+$(eval $(call KernelPackage,fb-sys-fillrect))
+
+
+define KernelPackage/fb-sys-copyarea
+  SUBMENU:=$(VIDEO_MENU)
+  TITLE:=Framebuffer software copy area support
+  DEPENDS:=+kmod-fb
+  KCONFIG:=CONFIG_FB_SYS_COPYAREA
+  FILES:=$(LINUX_DIR)/drivers/video/syscopyarea.ko
+  AUTOLOAD:=$(call AutoLoad,07,syscopyarea)
+endef
+
+define KernelPackage/fb-sys-copyarea/description
+ Kernel support for software copy area
+endef
+
+$(eval $(call KernelPackage,fb-sys-copyarea))
+
+define KernelPackage/fb-sys-imgblt
+  SUBMENU:=$(VIDEO_MENU)
+  TITLE:=Framebuffer software image blit support
+  DEPENDS:=+kmod-fb
+  KCONFIG:=CONFIG_FB_SYS_IMAGEBLIT
+  FILES:=$(LINUX_DIR)/drivers/video/sysimgblt.ko
+  AUTOLOAD:=$(call AutoLoad,07,sysimgblt)
+endef
+
+define KernelPackage/fb-sys-imgblt/description
+ Kernel support for software image blitting
+endef
+
+$(eval $(call KernelPackage,fb-sys-imgblt))
+
+define KernelPackage/fb-sys-fops
+  SUBMENU:=$(VIDEO_MENU)
+  TITLE:=Framebuffer fb_sys_fops
+  DEPENDS:=+kmod-fb
+  KCONFIG:=CONFIG_FB_SYS_FOPS
+  FILES:=$(LINUX_DIR)/drivers/video/fb_sys_fops.ko
+  AUTOLOAD:=$(call AutoLoad,07,fb_sys_fops)
+endef
+
+define KernelPackage/fb-sys-fops/description
+ Kernel support for fb_sys_fops
+endef
+
+$(eval $(call KernelPackage,fb-sys-fops))
+
+define KernelPackage/backlight
+  SUBMENU:=$(VIDEO_MENU)
+  TITLE:=Framebuffer backlight
+  DEPENDS:=+kmod-fb
+  KCONFIG:=CONFIG_FB_SYS_FOPS
+  FILES:=$(LINUX_DIR)/drivers/video/backlight/backlight.ko
+  AUTOLOAD:=$(call AutoLoad,07,backlight)
+endef
+
+define KernelPackage/backlight/description
+ Kernel support for LCD backlight
+endef
+
+$(eval $(call KernelPackage,backlight))
+
+define KernelPackage/fbtft
+  SUBMENU:=$(VIDEO_MENU)
+  TITLE:=Small SPI Display Support
+  DEPENDS:=+kmod-fb +kmod-fb-sys-copyarea +kmod-fb-sys-fillrect +kmod-fb-sys-imgblt +kmod-fb-sys-fops +kmod-backlight
+  KCONFIG:= \
+  			CONFIG_FB_TFT \
+  			CONFIG_FB_TFT_AGM1264K_FL \
+			CONFIG_FB_TFT_BD663474 \
+			CONFIG_FB_TFT_HX8340BN \
+			CONFIG_FB_TFT_HX8347D \
+			CONFIG_FB_TFT_HX8353D \
+			CONFIG_FB_TFT_ILI9320 \
+			CONFIG_FB_TFT_ILI9325 \
+			CONFIG_FB_TFT_ILI9340 \
+			CONFIG_FB_TFT_ILI9341 \
+			CONFIG_FB_TFT_ILI9481 \
+			CONFIG_FB_TFT_ILI9486 \
+			CONFIG_FB_TFT_PCD8544 \
+			CONFIG_FB_TFT_RA8875 \
+			CONFIG_FB_TFT_S6D02A1 \
+			CONFIG_FB_TFT_S6D1121 \
+			CONFIG_FB_TFT_SSD1289 \
+			CONFIG_FB_TFT_SSD1306 \
+			CONFIG_FB_TFT_SSD1331 \
+			CONFIG_FB_TFT_SSD1351 \
+			CONFIG_FB_TFT_ST7735R \
+			CONFIG_FB_TFT_TINYLCD \
+			CONFIG_FB_TFT_TLS8204 \
+			CONFIG_FB_TFT_UC1701 \
+			CONFIG_FB_TFT_UPD161704 \
+			CONFIG_FB_TFT_WATTEROTT \
+			CONFIG_FB_FLEX \
+			CONFIG_FB_TFT_FBTFT_DEVICE
+  FILES:= \
+			$(LINUX_DIR)/drivers/video/fbtft/*.ko
+endef
+
+define KernelPackage/fbtft/description
+ Small SPI Display Support (description)
+endef
+
+$(eval $(call KernelPackage,fbtft))
+
+define KernelPackage/fb-udl
+  SUBMENU:=$(VIDEO_MENU)
+  TITLE:=Displaylink USB graphics framebuffer driver
+  DEPENDS:=+kmod-fb +kmod-fb-sys-copyarea +kmod-fb-sys-fillrect +kmod-fb-sys-imgblt +kmod-fb-sys-fops +kmod-usb-core
+  KCONFIG:=CONFIG_FB_UDL
+  FILES:=$(LINUX_DIR)/drivers/video/udlfb.ko
+  AUTOLOAD:=$(call AutoLoad,07,udlfb)
+endef
+
+define KernelPackage/fb-udl/description
+ Kernel support Displaylink USB graphics framebuffer
+endef
+
+$(eval $(call KernelPackage,fb-udl))
 
 define KernelPackage/video-core
   SUBMENU:=$(VIDEO_MENU)
