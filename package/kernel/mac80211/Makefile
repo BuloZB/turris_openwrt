@@ -31,7 +31,7 @@ PKG_DRIVERS = \
 	iwl-legacy iwl3945 iwl4965 iwlwifi \
 	lib80211 \
 	libipw ipw2100 ipw2200 \
-	libertas-sdio libertas-usb \
+	libertas libertas-sdio libertas-usb \
 	mac80211-hwsim \
 	mt7601u \
 	mwl8k mwifiex-pcie \
@@ -1125,25 +1125,31 @@ define KernelPackage/ipw2200/description
  - ipw2200
 endef
 
+define KernelPackage/libertas
+  $(call KernelPackage/mac80211/Default)
+  TITLE:=Marvell 8xxx Libertas WLAN driver support
+  DEPENDS:= +kmod-lib80211 +kmod-cfg80211 +@DRIVER_WEXT_SUPPORT
+  FILES:= \
+       $(PKG_BUILD_DIR)/drivers/net/wireless/libertas/libertas.ko
+  AUTOLOAD:=$(call AutoProbe,libertas)
+endef
 
 define KernelPackage/libertas-usb
   $(call KernelPackage/mac80211/Default)
-  DEPENDS+= @USB_SUPPORT +kmod-cfg80211 +kmod-usb-core +kmod-lib80211 +@DRIVER_WEXT_SUPPORT
+  DEPENDS+= @USB_SUPPORT +kmod-usb-core +kmod-libertas 
   TITLE:=Marvell 88W8015 Wireless Driver
   FILES:= \
-	$(PKG_BUILD_DIR)/drivers/net/wireless/marvell/libertas/libertas.ko \
 	$(PKG_BUILD_DIR)/drivers/net/wireless/marvell/libertas/usb8xxx.ko
-  AUTOLOAD:=$(call AutoProbe,libertas usb8xxx)
+  AUTOLOAD:=$(call AutoProbe,usb8xxx)
 endef
 
 define KernelPackage/libertas-sdio
   $(call KernelPackage/mac80211/Default)
-  DEPENDS+= +kmod-cfg80211 +kmod-lib80211 +kmod-mmc +@DRIVER_WEXT_SUPPORT @!TARGET_uml
+  DEPENDS+= +kmod-mmc +kmod-libertas @!TARGET_uml
   TITLE:=Marvell 88W8686 Wireless Driver
   FILES:= \
-	$(PKG_BUILD_DIR)/drivers/net/wireless/marvell/libertas/libertas.ko \
 	$(PKG_BUILD_DIR)/drivers/net/wireless/marvell/libertas/libertas_sdio.ko
-  AUTOLOAD:=$(call AutoProbe,libertas libertas_sdio)
+  AUTOLOAD:=$(call AutoProbe,libertas_sdio)
 endef
 
 define KernelPackage/mac80211-hwsim
@@ -2144,6 +2150,7 @@ $(eval $(call KernelPackage,iwl-legacy))
 $(eval $(call KernelPackage,iwl4965))
 $(eval $(call KernelPackage,iwl3945))
 $(eval $(call KernelPackage,lib80211))
+$(eval $(call KernelPackage,libertas))
 $(eval $(call KernelPackage,libertas-usb))
 $(eval $(call KernelPackage,libertas-sdio))
 $(eval $(call KernelPackage,libipw))
