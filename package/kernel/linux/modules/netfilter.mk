@@ -459,7 +459,7 @@ $(eval $(call KernelPackage,ipt-debug))
 define KernelPackage/ipt-led
   TITLE:=Module to trigger a LED with a Netfilter rule
   KCONFIG:=$(KCONFIG_IPT_LED)
-  FILES:=$(foreach mod,$(IPT_LED-m),$(LINUX_DIR)/net/$(mod).ko)
+  DEPENDS:=+kmod-ledtrig-netfilter
   AUTOLOAD:=$(call AutoProbe,$(notdir $(IPT_LED-m)))
   $(call AddDepends/ipt)
 endef
