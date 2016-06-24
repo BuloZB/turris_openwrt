@@ -574,7 +574,7 @@ $(eval $(call KernelPackage,crypto-misc))
 
 define KernelPackage/crypto-ocf
   TITLE:=OCF modules
-  DEPENDS:=+@OPENSSL_ENGINE_CRYPTO @!TARGET_uml +kmod-crypto-manager
+  DEPENDS:=+@OPENSSL_ENGINE_CRYPTO @!TARGET_uml +kmod-crypto-manager +kmod-cryptodev
   KCONFIG:= \
 	CONFIG_OCF_OCF \
 	CONFIG_OCF_CRYPTODEV \
@@ -583,11 +583,9 @@ define KernelPackage/crypto-ocf
 	CONFIG_OCF_RANDOMHARVEST=y
   FILES:= \
 	$(LINUX_DIR)/crypto/ocf/ocf.ko \
-	$(LINUX_DIR)/crypto/ocf/cryptodev.ko \
 	$(LINUX_DIR)/crypto/ocf/cryptosoft.ko
   AUTOLOAD:=$(call AutoLoad,09, \
 	ocf \
-	cryptodev \
 	cryptosoft \
   )
   $(call AddDepends/crypto)
